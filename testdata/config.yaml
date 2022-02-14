@@ -32,6 +32,12 @@ rules:
     custom_permission: analysis
 
   - user:
+
+      role: Reader
+    groups:
+      - readers
+
+  - user:
       role: Reader
     groups:
       - readers
