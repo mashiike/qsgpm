@@ -1,0 +1,37 @@
+required_version: ">=0.0.0"
+
+user:
+  identity_type: IAM
+  session_name_suffix: "@example.com"
+  email_suffix: "@example.com"
+  namespace: default
+groups:
+  - all
+
+rules:
+  - user:
+      iam_role_name: Developer
+      role: Admin
+    groups:
+      - admins
+
+  - user:
+      iam_role_name: Manager
+      role: Author
+    groups:
+      - authors
+      - managers
+    custom_permission: manager
+
+  - user:
+      iam_role_name: Analyst
+      role: Author
+    groups:
+      - authors
+      - analysts
+    custom_permission: analysis
+
+  - user:
+      role: Reader
+    groups:
+      - readers
