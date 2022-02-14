@@ -13,6 +13,7 @@ import (
 func TestConfigValid(t *testing.T) {
 	cases := []string{
 		"testdata/config.yaml",
+		"testdata/config_quicksight.yaml",
 	}
 	for _, cfgFile := range cases {
 		t.Run(cfgFile, func(t *testing.T) {
