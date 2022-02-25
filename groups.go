@@ -27,7 +27,7 @@ func (groups Groups) Add(group, user string) {
 	g.Add(user)
 }
 
-func (groups Groups) Assgin(user string, groupNames []string) {
+func (groups Groups) Assign(user string, groupNames []string) {
 	for _, g := range groupNames {
 		groups.Add(g, user)
 	}

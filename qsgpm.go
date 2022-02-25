@@ -40,7 +40,7 @@ func (app *App) Run(ctx context.Context, opt RunOption) error {
 			}
 			for _, user := range users {
 				if groupNames, ok := app.cfg.GetGroupNames(user); ok {
-					expectGroups.Assgin(*user.UserName, groupNames)
+					expectGroups.Assign(*user.UserName, groupNames)
 				}
 				customPermissionName := app.cfg.GetCustomPermissionName(user)
 				svc.UpdateUserCustomPermission(ctx, user, customPermissionName)
