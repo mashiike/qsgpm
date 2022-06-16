@@ -46,7 +46,7 @@ func (app *App) Run(ctx context.Context, opt RunOption) error {
 				svc.UpdateUserCustomPermission(ctx, user, customPermissionName)
 			}
 		}
-		svc.ApplyGroups(ctx, namespace, expectGroups)
+		svc.ApplyGroups(ctx, namespace, expectGroups, WithCreateOnly(app.cfg.CreateOnly))
 	}
 	return nil
 }
