@@ -14,6 +14,7 @@ import (
 type Config struct {
 	RequiredVersion string `yaml:"required_version"`
 
+	CreateOnly       bool          `yaml:"create_only"`
 	User             *UserConfig   `yaml:"user"`
 	Groups           []string      `yaml:"groups"`
 	CustomPermission string        `yaml:"custom_permission"`

@@ -235,7 +235,27 @@ func (svc QuickSightService) GetGroups(ctx context.Context, namespace string) (G
 	return g, nil
 }
 
-func (svc QuickSightService) ApplyGroups(ctx context.Context, namespace string, groups Groups) error {
+type ApplyGroupsOptions struct {
+	noDeleteGroup           bool
+	noDeleteGroupMembership bool
+}
+
+func WithCreateOnly(f bool) func(*ApplyGroupsOptions) error {
+	return func(opt *ApplyGroupsOptions) error {
+		opt.noDeleteGroup = f || opt.noDeleteGroup
+		opt.noDeleteGroupMembership = f || opt.noDeleteGroup
+		return nil
+	}
+}
+
+func (svc QuickSightService) ApplyGroups(ctx context.Context, namespace string, groups Groups, optFns ...func(opt *ApplyGroupsOptions) error) error {
+	var opts ApplyGroupsOptions
+	for _, optFn := range optFns {
+		if err := optFn(&opts); err != nil {
+			return err
+		}
+	}
+
 	nowGroups, err := svc.GetGroups(ctx, namespace)
 	if err != nil {
 		return err
@@ -265,29 +285,32 @@ func (svc QuickSightService) ApplyGroups(ctx context.Context, namespace string, 
 		}
 		log.Printf("[info] create group membership %s in %s", gm.UserName, gm.GroupName)
 	}
-
-	for _, gm := range deleteMembership {
-		_, err := svc.client.DeleteGroupMembership(ctx, &quicksight.DeleteGroupMembershipInput{
-			AwsAccountId: aws.String(svc.awsAccountID),
-			Namespace:    aws.String(namespace),
-			GroupName:    aws.String(gm.GroupName),
-			MemberName:   aws.String(gm.UserName),
-		})
-		if err != nil {
-			return err
+	if !opts.noDeleteGroupMembership {
+		for _, gm := range deleteMembership {
+			_, err := svc.client.DeleteGroupMembership(ctx, &quicksight.DeleteGroupMembershipInput{
+				AwsAccountId: aws.String(svc.awsAccountID),
+				Namespace:    aws.String(namespace),
+				GroupName:    aws.String(gm.GroupName),
+				MemberName:   aws.String(gm.UserName),
+			})
+			if err != nil {
+				return err
+			}
+			log.Printf("[info] delete group membership %s in %s", gm.UserName, gm.GroupName)
 		}
-		log.Printf("[info] delete group membership %s in %s", gm.UserName, gm.GroupName)
 	}
-	for _, g := range deleteGroups {
-		_, err := svc.client.DeleteGroup(ctx, &quicksight.DeleteGroupInput{
-			AwsAccountId: aws.String(svc.awsAccountID),
-			Namespace:    aws.String(namespace),
-			GroupName:    aws.String(g),
-		})
-		if err != nil {
-			return err
+	if !opts.noDeleteGroup {
+		for _, g := range deleteGroups {
+			_, err := svc.client.DeleteGroup(ctx, &quicksight.DeleteGroupInput{
+				AwsAccountId: aws.String(svc.awsAccountID),
+				Namespace:    aws.String(namespace),
+				GroupName:    aws.String(g),
+			})
+			if err != nil {
+				return err
+			}
+			log.Printf("[info] delete group %s", g)
 		}
-		log.Printf("[info] delete group %s", g)
 	}
 	return nil
 }
