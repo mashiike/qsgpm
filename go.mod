@@ -12,7 +12,7 @@ require (
 	github.com/fujiwara/logutils v1.1.0
 	github.com/hashicorp/go-version v1.5.0
 	github.com/kayac/go-config v0.6.0
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.2
 	github.com/urfave/cli/v2 v2.3.0
 )
 
@@ -36,5 +36,5 @@ require (
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
