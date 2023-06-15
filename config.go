@@ -42,7 +42,7 @@ func (cfg *Config) Restrict() error {
 		cfg.versionConstraints = constraints
 	}
 	for i, rule := range cfg.Rules {
-		rule.User = cfg.User.Merge(rule.User)
+		rule.User = rule.User.Merge(cfg.User)
 		rule.Groups = append(rule.Groups, cfg.Groups...)
 		rule.CustomPermission = coalesceString(rule.CustomPermission, cfg.CustomPermission)
 		if err := rule.Restrict(); err != nil {
@@ -63,6 +63,9 @@ func (cfg *Config) GetCustomPermissionName(user *User) *string {
 
 func (cfg *Config) GetGroupNames(user *User) ([]string, bool) {
 	for _, rule := range cfg.Rules {
+		if !rule.User.Match(user) {
+			continue
+		}
 		if groups, ok := rule.GetGroupNames(user); ok {
 			return groups, true
 		}

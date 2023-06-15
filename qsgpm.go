@@ -2,6 +2,7 @@ package qsgpm
 
 import (
 	"context"
+	"log"
 )
 
 type App struct {
@@ -31,6 +32,7 @@ func (app *App) Run(ctx context.Context, opt RunOption) error {
 	}
 	namespaces := app.cfg.GetNamespaces()
 	for _, namespace := range namespaces {
+		log.Printf("[debug] namespace: %s", namespace)
 		expectGroups := newGroups()
 		p := svc.NewUsersPaginator(namespace)
 		for p.HasMoreUsers() {

@@ -23,7 +23,7 @@ type ListUsersAPIClient interface {
 // ListUsersPaginatorOptions is the paginator options for ListUsers
 type ListUsersPaginatorOptions struct {
 	// The maximum number of results to return.
-	Limit int32
+	MaxResults *int32
 
 	// Set to true if pagination should stop if the service returns a pagination token
 	// that matches the most recent token provided to the service.
@@ -46,9 +46,7 @@ func NewListUsersPaginator(client ListUsersAPIClient, params *quicksight.ListUse
 	}
 
 	options := ListUsersPaginatorOptions{}
-	if params.MaxResults != nil {
-		options.Limit = *params.MaxResults
-	}
+	options.MaxResults = params.MaxResults
 
 	for _, fn := range optFns {
 		fn(&options)
@@ -76,8 +74,7 @@ func (p *ListUsersPaginator) NextPage(ctx context.Context, optFns ...func(*quick
 
 	params := *p.params
 	params.NextToken = p.nextToken
-
-	params.MaxResults = &p.options.Limit
+	params.MaxResults = p.options.MaxResults
 
 	result, err := p.client.ListUsers(ctx, &params, optFns...)
 	if err != nil {
