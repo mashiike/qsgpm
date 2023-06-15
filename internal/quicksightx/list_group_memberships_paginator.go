@@ -46,8 +46,8 @@ func NewListGroupMembershipsPaginator(client ListGroupMembershipsAPIClient, para
 	}
 
 	options := ListGroupMembershipsPaginatorOptions{}
-	if params.MaxResults != 0 {
-		options.Limit = params.MaxResults
+	if params.MaxResults != nil {
+		options.Limit = *params.MaxResults
 	}
 
 	for _, fn := range optFns {
@@ -77,7 +77,7 @@ func (p *ListGroupMembershipsPaginator) NextPage(ctx context.Context, optFns ...
 	params := *p.params
 	params.NextToken = p.nextToken
 
-	params.MaxResults = p.options.Limit
+	params.MaxResults = &p.options.Limit
 
 	result, err := p.client.ListGroupMemberships(ctx, &params, optFns...)
 	if err != nil {

@@ -46,8 +46,8 @@ func NewListGroupsPaginator(client ListGroupsAPIClient, params *quicksight.ListG
 	}
 
 	options := ListGroupsPaginatorOptions{}
-	if params.MaxResults != 0 {
-		options.Limit = params.MaxResults
+	if params.MaxResults != nil {
+		options.Limit = *params.MaxResults
 	}
 
 	for _, fn := range optFns {
@@ -77,7 +77,7 @@ func (p *ListGroupsPaginator) NextPage(ctx context.Context, optFns ...func(*quic
 	params := *p.params
 	params.NextToken = p.nextToken
 
-	params.MaxResults = p.options.Limit
+	params.MaxResults = &p.options.Limit
 
 	result, err := p.client.ListGroups(ctx, &params, optFns...)
 	if err != nil {
