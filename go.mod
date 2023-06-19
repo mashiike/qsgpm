@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-lambda-go v1.28.0
 	github.com/aws/aws-sdk-go-v2 v1.18.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.26
-	github.com/aws/aws-sdk-go-v2/service/quicksight v1.37.1
+	github.com/aws/aws-sdk-go-v2/service/quicksight v1.37.2
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.1
 	github.com/fatih/color v1.13.0
 	github.com/fujiwara/logutils v1.1.0
